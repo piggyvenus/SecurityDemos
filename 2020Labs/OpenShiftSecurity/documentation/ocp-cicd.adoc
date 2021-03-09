@@ -71,7 +71,7 @@ image:images/lab7-ecommerce-webapp.png[]
 
 . Go to 	https://www.opentlc.com/gg/gg.cgi?profile=generic_na_shchan-redhat.com, enter the Activation Key and your email and click submit.
 +
-image:images/requestguid.png[2000,2000]
+image:images/requestGUID.png[2000,2000]
 . You will be presented with your user id and GUID as shown below.
 +
 image:images/guid.png[2000,2000]
