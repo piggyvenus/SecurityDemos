@@ -26,14 +26,6 @@ The image hardening pipeline checks out the image specification file and support
 
 The application CI/CD pipeline will checkout java web application source code from a git repository, build it, run automated tests, perform a static code analysis scan with SonarQube, send the produced artifact to Sonatype Nexus for storage, build a docker image containing our application, push it to quay for additional security scanning, perform OpenSCAP scans, deploy the application to OpenShift so that it can be scanned for web vulnerabilities by OWASP ZAP, then we have the opportunity to promote the application to other OpenShift projects if we are satisfied with the results. The following sections describe the tools we will be using in this pipeline lab.
 
-==== CodeReady Workspaces
-
-CodeReady Workspaces is a collaborative Kubernetes-native development solution that delivers Eclipse workspaces and in-browser integrated development environment (IDE) for rapid cloud application development.
-
-Built on the open source Eclipse Che project, CodeReady Workspaces uses containers to provide any member of the development or IT team with a consistent, secure, and zero-configuration development environment.
-
-The user experience is as fast and familiar as an IDE on your laptop.
-
 ==== Gogs
 Gogs is the Go Git Service - a github-like git server written in the Go programming language.
 
@@ -77,9 +69,12 @@ image:images/lab7-ecommerce-webapp.png[]
 
 === Lab 4.1 Logging into the environment
 
-. After following Lab 0 and choosing *TC9818 -AD - Implementing proactive security and compliance automation and DevSecOps* from the drop down, you will be presented with your user id and GUID.
+. Go to 	https://www.opentlc.com/gg/gg.cgi?profile=generic_na_shchan-redhat.com, enter the Activation Key and your email and click submit.
 +
-image:images/gg-ad2.png[2000,2000]
+image:images/requestguid.png[2000,2000]
+. You will be presented with your user id and GUID as shown below.
++
+image:images/guid.png[2000,2000]
 
 . Log in to each of the tools that we previously mentioned  with the credentials shown below. Replace *{GUID}* with your provided lab cluster GUID and replace *{USERID}* with your provided user id - e.g., *user1* . Both the lab cluster GUID and USERID can be found on the Lab Information page where you got your assigned GUID and USERID. (see previous step for more details)
 
@@ -87,11 +82,11 @@ image:images/gg-ad2.png[2000,2000]
 +
 *login:* {USERID}
 +
-*password:* r3dh4t1!
+*password:* openshift
 +
 image:images/lab7.2-openshift.png[]
 +
-* Gogs - http://gogs-ocp-workshop.apps.cluster-{GUID}.{GUID}.example.opentlc.com/
+* Gogs - http://gogs-ocp-workshop.apps.cluster-{GUID}.{GUID}.example.opentlc.com
 +
 *login:* {USERID}
 +
@@ -103,7 +98,7 @@ image:images/lab7.2-gogs.png[]
 +
 **login:** {USERID}
 +
-**password:** r3dh4t1!
+**password:** openshift
 +
 When prompted, press the *Allow selected permissions* button.
 +
@@ -292,7 +287,7 @@ Skipping this `yum update` will prevent the image build from applying CVE fixes.
 +
 . From Jenkins, restart the hardening pipeline.
 +
-. Notice that the compliance gate passed since the hardening script was able to perform compliance remediaton. Go to the blue ocean view again and look at the vulnerability report under `Artifacts`
+. Notice that the pipeline did not pass the compliance gate since we commented out the compliance remediaton from the hardening script. Go to the blue ocean view again and look at the vulnerability report under `Artifacts`
 +
 . Revert the FROM statement in the Dockerfile back to:
 +
@@ -393,13 +388,13 @@ image:images/lab7.4-quay-vulnerabilities.png[]
 +
 image:images/lab7.4-quay-packages.png[]
 +
-. You can also view the deployed application at http://ecommerce-{USERID}.apps.{GUID}.example.opentlc.com/
+. You can also view the deployed application at http://ecommerce-{USERID}-prod.apps.cluster-{GUID}.{GUID}.example.opentlc.com
 
-=== Lab 4.6 Update the base image and source code
+=== Lab 4.6 Update the base image and source code (OPTIONAL)
 
 An old base image was used to build the application, we will update the base image to use a newer version. This will reduce the number of vulnerabilities that are detected. We will also update the source code to remove the vulnerabilities detected by SonarQube.
 
-. Navigate to your source code repository in gogs http://gogs-ocp-workshop.apps.{GUID}.example.opentlc.com and login if you haven't already (userid / openshift)
+. Navigate to your source code repository in gogs http://gogs-ocp-workshop.apps.cluster-{GUID}.{GUID}.example.opentlc.com and login if you haven't already (userid / openshift)
 +
 . Click on the *SecurityDemos* repository under *My Repositories*
 +
@@ -432,79 +427,10 @@ image:images/lab7.5-gogs-settings.png[]
 +
 image:images/lab7.5-add-gogs-webhook.png[]
 +
-. Update the payload with the ecommerce pipeline generic webhook (e.g. https://api.{GUID}.example.opentlc.com:6443/apis/build.openshift.io/v1/namespaces/{USERID}/buildconfigs/{USERID}-ecommerce-pipeline/webhooks/{USERID}-ecommerce-pipeline/generic).
+. Update the payload with the ecommerce pipeline generic webhook
+(e.g. https://api.cluster-{GUID}.{GUID}.example.opentlc.com:6443/apis/build.openshift.io/v1/namespaces/{USERID}/buildconfigs/{USERID}-ecommerce-pipeline/webhooks/{USERID}-ecommerce-pipeline/generic).
+you can copy the webhook link from the console under the BuildConfig pipeline to automatically kickoff the pipeline.
++
+image:images/webhook.png[]
 +
 image:images/lab7.5-add-payload.png[]
-+
-. Navigate to CodeReady Workspaces http://codeready-ocp-workshop.apps.{GUID}.example.opentlc.com and register an account if you haven't already and login (userid / openshift).
-+
-image:images/lab7.5-crwx-register1.png[]
-+
-. Select the Java Spring Boot stack and import the SecurityDemos project.
-+
-NOTE: When entering the Git URL for adding or importing the SecurityDemos project prefix the url with your Gogs username and password, like so: http://{USERID}:openshift@gogs-ocp-workshop.apps.{GUID}.example.opentlc.com/{USERID}/SecurityDemos.git
-+
-image:images/lab7.5-crwx-stack-project.png[]
-+
-. Click down through the following folders src -> main -> java -> com -> baeldung -> ecommerce -> controller -> OrderController.java
-+
-image:images/lab7.5-gogs-src.png[]
-+
-. Edit the file and remove line 28, which has a hardcoded password. This password is not actually used by the application so it is safe to remove it.
-+
-image:images/lab7.5-gogs-delete-password.png[]
-+
-. Click the commit changes button.
-+
-image:images/lab7.5-crwx-commit-changes.png[]
-+
-+
-. Navigate back to jenkins and *abort* the current build, then navigate to the pipeline page
-+
-image:images/lab7.5-jenkins-abort.png[]
-+
-. Start another build by clicking *Build with Parameters*
-+
-image:images/lab7.4-jenkins-build.png[]
-+
-. Then click the *Build* button
-+
-image:images/lab7.4-build-with-params.png[]
-+
-. Once the build has started,navigate to the blue ocean view of the build.  First select the current build
-+
-image:images/lab7.5-jenkins-build-2.png[]
-+
-. Click the *Open Blue Ocean* Link
-image:images/lab7.5-jenkins-blueocean.png[]
-+
-. View the build progress
-image:images/lab7.5-jenkins-blueocean-view.png[]
-+
-. Once the build is complete review the reports, quay vulnerability scan and sonarqube to verify that the number of vulnerabilities has been reduced. Click *Artifacts* in the blue ocean view:
-+
-image:images/lab7.5-jenkins-blueocean-artifacts.png[]
-+
-. Then view each of the reports. You may need to refresh the browser.
-+
-image:images/lab7.5-jenkins-blueocean-artifacts-links.png[]
-+
-. After viewing the reports, feel free to promote the application image into the staging and prod projects:
-+
-image:images/lab7.5-jenkins-promote-stage.png[]
-
-+
-. The staging version of the app can be viewed here:
-+
-http://ecommerce-{userid}-stage.apps.{GUID}.example.opentlc.com
-+
-image:images/lab7.5-jenkins-promote-prod.png[]
-. The production version of the app can be viewed here:
-+
-http://ecommerce-{userid}-prod.apps.{GUID}.example.opentlc.com
-+
-. Time permitting, go back to your gogs repository, open up the Jenkinsfile and take a look at some of the pipeline implementation details.
-
-<<top>>
-
-link:README.adoc#table-of-contents[ Table of Contents ]
