@@ -67,9 +67,9 @@ For the purposes of this lab, we will be examining a simple, all-in-one https://
 
 image:images/lab7-ecommerce-webapp.png[]
 
-=== Lab 4.1 Logging into the environment
+=== Lab 1.1 Logging into the environment
 
-. Go to 	https://www.opentlc.com/gg/gg.cgi?profile=generic_na_shchan-redhat.com, enter the Activation Key and your email and click submit.
+. Go to https://www.opentlc.com/gg/gg.cgi?profile=generic_na_shchan-redhat.com, enter the Activation Key and your email and click submit.
 +
 image:images/requestGUID.png[2000,2000]
 . You will be presented with your user id and GUID as shown below.
@@ -127,7 +127,7 @@ image:images/lab7.2-sonarqube.png[]
 +
 image:images/lab7.2-quay.png[]
 
-=== Lab 4.3 Explore the pipeline stages
+=== Lab 1.2 Explore the pipeline stages
 
 The following sections describe each of the stages in the image hardening pipeline that we will be running during this lab.
 
@@ -217,7 +217,7 @@ Configures the OpenShift production project (i.e., userid-prod)
 ==== Promote to Prod?
 Similar to the previous _Promote to Stage?_ step, requiring manual intervention before promoting the application image to an even higher level environment.
 
-=== Lab 4.4 The image hardening pipeline
+=== Lab 1.3 The image hardening pipeline
 
 . Navigate back to the jenkins user interface https://jenkins-{USERID}.apps.{GUID}.example.opentlc.com
 +
@@ -299,7 +299,7 @@ and uncomment the `yum update` lines in the `Dockerfile` and `fix-2.sh` script.
 +
 . Rerun the pipeline to make sure it is once again successful.
 
-=== Lab 4.5 Exercise a run of the application pipeline
+=== Lab 1.4 Exercise a run of the application pipeline
 
 . Navigate back to the jenkins user interface https://jenkins-{USERID}.apps.{GUID}.example.opentlc.com
 +
@@ -390,7 +390,7 @@ image:images/lab7.4-quay-packages.png[]
 +
 . You can also view the deployed application at http://ecommerce-{USERID}-prod.apps.cluster-{GUID}.{GUID}.example.opentlc.com
 
-=== Lab 4.6 Update the base image and source code (OPTIONAL)
+=== Lab 1.5 Update the base image and source code (OPTIONAL)
 
 An old base image was used to build the application, we will update the base image to use a newer version. This will reduce the number of vulnerabilities that are detected. We will also update the source code to remove the vulnerabilities detected by SonarQube.
 
