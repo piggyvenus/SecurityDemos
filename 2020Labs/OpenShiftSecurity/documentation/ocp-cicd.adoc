@@ -219,7 +219,7 @@ Similar to the previous _Promote to Stage?_ step, requiring manual intervention 
 
 === Lab 1.3 The image hardening pipeline
 
-. Navigate back to the jenkins user interface https://jenkins-{USERID}.apps.{GUID}.example.opentlc.com
+. Navigate back to the jenkins user interface https://jenkins-{USERID}.apps.cluster-{GUID}.{GUID}.example.opentlc.com
 +
 . Click the folder label with your user id (e.g., user1)
 +
