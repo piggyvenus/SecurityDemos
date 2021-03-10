@@ -357,21 +357,21 @@ image:images/lab7.4-openscap-vulnerabilities.png[]
 +
 image:images/lab7.4-owasp-zap.png[]
 +
-. Navigate to the SonarQube url http://sonarqube-ocp-workshop.apps.{GUID}.example.opentlc.com Click on the number link above *Projects Analyzed* section:
+. Navigate to the SonarQube url https://sonarqube-ocp-workshop.apps.cluster-{GUID}.{GUID}.example.opentlc.com Click on the number link above *Projects Analyzed* section:
 +
-image:images/lab7.4-sonarqube-projects.png[]
+image:images/lab7.4-sonarqube-projects2.png[]
 +
-. Find the project prefixed with your userid. Note 3 vulnerabilities were found and that the unit test code coverage has been recorded. SonarQube also provides code metrics on items including potential bugs and code smells. Click the Project prefixed with your userid and determine where the vulnerabilities are in the source code.
+. Find the project prefixed with your userid. Note there isn’t any vulnerabilities and that the unit test code coverage has been recorded. SonarQube also provides code metrics on items including potential bugs and code smells. Click the Project prefixed with your userid and determine where the vulnerabilities are in the source code.
 +
-image:images/lab7.4-sonarqube-project-link.png[]
-. Navigate to the nexus url http://nexus-ocp-workshop.apps.{GUID}.example.opentlc.com, click *browse* then *maven-snapshots*
+image:images/lab7.4-sonarqube-project-link2.png[]
+. Navigate to the nexus url http://nexus-ocp-workshop.apps.cluster-{GUID}.{GUID}.example.opentlc.com, click *browse* then *maven-snapshots*
 +
 image:images/lab7.4-nexus-snapshots.png[]
 +
 . Navigate the folder structure and verify your JAR file exists within it.
 +
 image:images/lab7.4-nexus-jar.png[]
-. Navigate to the quay url http://quayecosystem-quay-quay-enterprise.apps.{GUID}.example.opentlc.com, login as *admin* with the password *admin123* if you haven't already
+. Navigate to the quay url http://quayecosystem-quay-quay-enterprise.apps.cluster-{GUID}.{GUID}.example.opentlc.com, login as *admin* with the password *admin123* if you haven't already
 +
 . Navigate to the image tagged with your userid by clicking the *ecommerce* repository
 +
